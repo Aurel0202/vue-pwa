@@ -1,18 +1,16 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import InstallBtn from '@/components/InstallBtn.vue'
 import MyMap from '@/components/MapView.vue'
 
-// Pour le pseudo et la position
 const pseudo = ref('')
 const lat = ref(null)
 const long = ref(null)
 const apiMessage = ref('')
 const users = ref([])
 
-function getCurrentPosition() {
+function startWatchPosition() {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
+    navigator.geolocation.watchPosition(
       (pos) => {
         lat.value = pos.coords.latitude
         long.value = pos.coords.longitude
@@ -20,7 +18,7 @@ function getCurrentPosition() {
       (err) => {
         apiMessage.value = 'Erreur géolocalisation : ' + err.message
       },
-      { enableHighAccuracy: true, maximumAge: 10000, timeout: 5000 },
+      { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 },
     )
   } else {
     apiMessage.value = "La géolocalisation n'est pas supportée par ce navigateur."
@@ -35,7 +33,7 @@ async function fetchUsers() {
     const data = await res.json()
     users.value = data.entries || []
   } catch (e) {
-    // Optionnel : afficher une erreur
+    apiMessage.value = 'Erreur lors du chargement des utilisateurs.'
   }
 }
 
@@ -69,26 +67,32 @@ async function postUser() {
 }
 
 onMounted(() => {
-  getCurrentPosition()
+  startWatchPosition()
   fetchUsers()
 })
 </script>
 
 <template>
   <div>
-    <p>Ajoute ton pseudo et ta position</p>
-    <InstallBtn />
     <div class="user-api-form">
       <form @submit.prevent="postUser">
         <input v-model="pseudo" placeholder="Pseudo" required />
-        <input v-model="lat" placeholder="Latitude" type="number" step="any" required />
-        <input v-model="long" placeholder="Longitude" type="number" step="any" required />
-        <button type="submit">Envoyer</button>
+        <input v-model="lat" placeholder="Latitude" type="number" step="any" required readonly />
+        <input v-model="long" placeholder="Longitude" type="number" step="any" required readonly />
+        <button type="submit">Partager ma localisation</button>
       </form>
       <div v-if="apiMessage" class="api-message">{{ apiMessage }}</div>
     </div>
-    <h2>Carte avec VueLeaflet</h2>
+    <h2>Carte des utilisateurs</h2>
     <MyMap :users="users" />
+    <div style="margin-top:2em">
+      <h3>Liste des utilisateurs</h3>
+      <ul>
+        <li v-for="user in users" :key="user._id">
+          {{ user.pseudo }} — ({{ user.lat }}, {{ user.long }})
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
