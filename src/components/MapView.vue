@@ -7,6 +7,11 @@
         name="OpenStreetMap"
       />
       <l-marker :lat-lng="position" />
+      <l-marker v-for="user in users" :key="user._id" :lat-lng="[user.lat, user.long]">
+        <template #default>
+          <span>{{ user.pseudo }}</span>
+        </template>
+      </l-marker>
     </l-map>
   </div>
 </template>
@@ -16,6 +21,12 @@ import 'leaflet/dist/leaflet.css'
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet'
 
 export default {
+  props: {
+    users: {
+      type: Array,
+      default: () => [],
+    },
+  },
   components: {
     LMap,
     LTileLayer,
