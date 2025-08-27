@@ -1,9 +1,9 @@
 <template>
   <div class="user-api-form">
-    <form @submit.prevent="postUser">
-      <input v-model="pseudo" placeholder="Pseudo" required />
-      <input v-model="lat" placeholder="Latitude" type="number" step="any" required readonly />
-      <input v-model="long" placeholder="Longitude" type="number" step="any" required readonly />
+    <form @submit.prevent="submitForm">
+      <input v-model="pseudoLocal" placeholder="Pseudo" required />
+      <input :value="lat" placeholder="Latitude" type="number" step="any" required readonly />
+      <input :value="long" placeholder="Longitude" type="number" step="any" required readonly />
       <button type="submit">Partager ma localisation</button>
     </form>
     <div v-if="apiMessage" class="api-message">{{ apiMessage }}</div>
@@ -14,9 +14,9 @@
 import { ref, defineProps, defineEmits } from 'vue'
 const props = defineProps(['lat', 'long', 'apiMessage'])
 const emit = defineEmits(['submit'])
-const pseudo = ref('')
+const pseudoLocal = ref('')
 function submitForm() {
-  emit('submit', pseudo.value)
+  emit('submit', pseudoLocal.value)
 }
 </script>
 
