@@ -49,6 +49,6 @@ watch(
       center.value = val
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
 </script>

@@ -82,7 +82,11 @@ onMounted(() => {
   <div>
     <UserForm :lat="lat" :long="long" :apiMessage="apiMessage" @submit="postUser" />
     <h2>Carte des utilisateurs</h2>
-    <MyMap :users="users" :myPosition="lat && long ? [lat, long] : null" :defaultCenter="[50.4739, 4.4532]" />
+    <MyMap
+      :users="users"
+      :myPosition="lat && long ? [lat, long] : null"
+      :defaultCenter="[50.4739, 4.4532]"
+    />
     <UserList :users="users" />
   </div>
 </template>
