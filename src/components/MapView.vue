@@ -62,29 +62,3 @@ export default {
   },
 }
 </script>
-
-<!-- <template>
-  <LMap :zoom="zoom" :center="center" style="height: 500px; width: 100%">
-    <LTileLayer
-      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      attribution="&copy; OpenStreetMap contributors"
-    />
-    <LMarker :lat-lng="center" />
-  </LMap>
-</template>
-
-<script>
-import { defineComponent, ref } from 'vue'
-import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet'
-import 'leaflet/dist/leaflet.css'
-
-export default defineComponent({
-  name: 'MapView',
-  components: { LMap, LTileLayer, LMarker },
-  setup() {
-    const zoom = ref(13)
-    const center = ref([48.8566, 2.3522])
-    return { zoom, center }
-  },
-})
-</script> -->
