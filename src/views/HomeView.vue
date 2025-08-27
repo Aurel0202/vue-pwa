@@ -7,10 +7,12 @@ const lat = ref(null)
 const long = ref(null)
 const apiMessage = ref('')
 const users = ref([])
+let watchId = null
 
 function startWatchPosition() {
   if (navigator.geolocation) {
-    navigator.geolocation.watchPosition(
+    if (watchId) navigator.geolocation.clearWatch(watchId)
+    watchId = navigator.geolocation.watchPosition(
       (pos) => {
         lat.value = pos.coords.latitude
         long.value = pos.coords.longitude
@@ -69,6 +71,8 @@ async function postUser() {
 onMounted(() => {
   startWatchPosition()
   fetchUsers()
+  // Rafraîchit la liste toutes les 10 secondes pour voir les autres en temps réel
+  setInterval(fetchUsers, 10000)
 })
 </script>
 
